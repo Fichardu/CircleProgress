@@ -4,4 +4,4 @@ A Circle Progress View with a rotate animation. Just make for fun. Hope you enjo
 
 # Quick Look
 
-![](https://github.com/Fichardu/CircleProgress/tree/master/art/progress.gif)
+![](./art/progress.gif)
