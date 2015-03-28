@@ -19,9 +19,11 @@ public class CircleProgress extends View {
 
     private final double DEGREE = Math.PI / 180;
     private Paint mPaint;
+    private int mViewSize;
     private int mRadius;
     private int mPointRadius;
     private long mStartTime;
+    private long mPlayTime;
     private boolean mStartAnim = false;
     private Point mCenter = new Point();
 
@@ -58,13 +60,11 @@ public class CircleProgress extends View {
         int defaultSize = getResources().getDimensionPixelSize(R.dimen.default_circle_view_size);
         int width = getDefaultSize(defaultSize, widthMeasureSpec);
         int height = getDefaultSize(defaultSize, heightMeasureSpec);
-        int size = Math.min(width, height);
-        setMeasuredDimension(size, size);
+        mViewSize = Math.min(width, height);
+        setMeasuredDimension(mViewSize, mViewSize);
+        mCenter.set(mViewSize / 2, mViewSize / 2);
 
-        mRadius = size / 3;
-        mPointRadius = mRadius / 12;
-        mCenter.set(size / 2, size / 2);
-        calPoints();
+        calPoints(1.0f);
     }
 
 
@@ -72,29 +72,29 @@ public class CircleProgress extends View {
     protected void onDraw(Canvas canvas) {
         canvas.save();
         canvas.translate(mCenter.x, mCenter.y);
-        if (mStartAnim) {
-            float factor = getFactor();
-            canvas.rotate(36 * factor);
-            float x, y;
-            for (int i = 0; i < POINT_NUM; ++i) {
-                mPaint.setColor(mArcPoint[i].color);
-                float itemFactor = getItemFactor(i, factor);
-                x = mArcPoint[i].x - 2 * mArcPoint[i].x * itemFactor;
-                y = mArcPoint[i].y - 2 * mArcPoint[i].y * itemFactor;
-                canvas.drawCircle(x, y, mPointRadius, mPaint);
-            }
-            postInvalidate();
-        } else {
-            for (ArcPoint item : mArcPoint) {
-                mPaint.setColor(item.color);
-                canvas.drawCircle(item.x, item.y, mPointRadius, mPaint);
-            }
+
+        float factor = getFactor();
+        canvas.rotate(36 * factor);
+        float x, y;
+        for (int i = 0; i < POINT_NUM; ++i) {
+            mPaint.setColor(mArcPoint[i].color);
+            float itemFactor = getItemFactor(i, factor);
+            x = mArcPoint[i].x - 2 * mArcPoint[i].x * itemFactor;
+            y = mArcPoint[i].y - 2 * mArcPoint[i].y * itemFactor;
+            canvas.drawCircle(x, y, mPointRadius, mPaint);
         }
+
         canvas.restore();
 
+        if (mStartAnim) {
+            postInvalidate();
+        }
     }
 
-    private void calPoints() {
+    private void calPoints(float factor) {
+        mRadius = (int) (mViewSize / 3 * factor);
+        mPointRadius = mRadius / 12;
+
         for (int i = 0; i < POINT_NUM; ++i) {
             float x = mRadius * -(float) Math.sin(DEGREE * 24 * i);
             float y = mRadius * -(float) Math.cos(DEGREE * 24 * i);
@@ -105,17 +105,12 @@ public class CircleProgress extends View {
     }
 
 
-
-
-
     private float getFactor() {
         if (mStartAnim) {
-            long offset = AnimationUtils.currentAnimationTimeMillis() - mStartTime;
-            float factor = offset / (float) mDuration;
-            return factor % 1f;
-        } else {
-            return 0f;
+            mPlayTime = AnimationUtils.currentAnimationTimeMillis() - mStartTime;
         }
+        float factor = mPlayTime / (float) mDuration;
+        return factor % 1f;
     }
 
     private float getItemFactor(int index, float factor) {
@@ -129,9 +124,17 @@ public class CircleProgress extends View {
     }
 
     public void startAnim() {
+        mPlayTime = mPlayTime % mDuration;
+        mStartTime = AnimationUtils.currentAnimationTimeMillis() - mPlayTime;
         mStartAnim = true;
-        mStartTime = AnimationUtils.currentAnimationTimeMillis();
         postInvalidate();
+    }
+
+    public void reset() {
+        stopAnim();
+        mPlayTime = 0;
+        postInvalidate();
+
     }
 
     public void stopAnim() {
@@ -144,6 +147,12 @@ public class CircleProgress extends View {
 
     public void setDuration(long duration) {
         mDuration = duration;
+    }
+
+    public void setRadius(float factor) {
+        stopAnim();
+        calPoints(factor);
+        startAnim();
     }
 
     static class ArcPoint {
