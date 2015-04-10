@@ -6,7 +6,7 @@ A Circle Progress View with a rotate animation. Just make for fun. Hope you enjo
 
 <img src="./art/progress.gif" width="360">
 
-# Useage
+# Usage
 
 ```xml
 <me.fichardu.circleprogress.CircleProgress
@@ -23,3 +23,7 @@ mProgressView.reset();
 mProgressView.setDuration();
 mProgressView.setInterpolator();
 ```
+
+# Analyse
+
+[Analyse Blog post here](http://fichardu.github.io/blog/circle-progress-view/)
