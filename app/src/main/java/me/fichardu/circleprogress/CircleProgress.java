@@ -2,6 +2,7 @@ package me.fichardu.circleprogress;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -14,7 +15,7 @@ public class CircleProgress extends View {
     private static final int RED = 0xFFE5282C;
     private static final int YELLOW = 0xFF1F909A;
     private static final int BLUE = 0xFFFC9E12;
-    private static final int[] COLORS = new int[]{RED, BLUE, YELLOW};
+    private int[] COLORS;
     private TimeInterpolator mInterpolator = new EaseInOutCubicInterpolator();
 
     private final double DEGREE = Math.PI / 180;
@@ -52,8 +53,15 @@ public class CircleProgress extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
-    }
 
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircleProgress, defStyle, 0);
+        int color1 = a.getColor(R.styleable.CircleProgress_color1, RED);
+        int color2 = a.getColor(R.styleable.CircleProgress_color2, YELLOW);
+        int color3 = a.getColor(R.styleable.CircleProgress_color3, BLUE);
+        a.recycle();
+
+        COLORS = new int[]{color1, color2, color3};
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

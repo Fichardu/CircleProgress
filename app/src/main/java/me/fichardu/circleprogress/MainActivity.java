@@ -14,8 +14,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private View mStartBtn;
     private View mStopBtn;
     private View mResetBtn;
-    private SeekBar mSeekBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +29,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mResetBtn = findViewById(R.id.reset_btn);
         mResetBtn.setOnClickListener(this);
 
-        mSeekBar = (SeekBar) findViewById(R.id.out_seek);
+        SeekBar mSeekBar = (SeekBar) findViewById(R.id.out_seek);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
