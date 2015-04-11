@@ -25,15 +25,15 @@ import android.animation.TimeInterpolator;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class EaseInOutCubicInterpolator implements TimeInterpolator{
+public class EaseInOutCubicInterpolator implements TimeInterpolator {
 
     @Override
     public float getInterpolation(float input) {
-        if ((input*=2) < 1.0f) {
+        if ((input *= 2) < 1.0f) {
             return 0.5f * input * input * input;
         }
         input -= 2;
-        return 0.5f*input*input*input + 1;
+        return 0.5f * input * input * input + 1;
     }
 
 }
