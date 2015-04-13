@@ -15,13 +15,13 @@ public class CircleProgress extends View {
     private static final int RED = 0xFFE5282C;
     private static final int YELLOW = 0xFF1F909A;
     private static final int BLUE = 0xFFFC9E12;
+    private static final int COLOR_NUM = 3;
     private int[] COLORS;
     private TimeInterpolator mInterpolator = new EaseInOutCubicInterpolator();
 
     private final double DEGREE = Math.PI / 180;
     private Paint mPaint;
     private int mViewSize;
-    private int mRadius;
     private int mPointRadius;
     private long mStartTime;
     private long mPlayTime;
@@ -30,6 +30,7 @@ public class CircleProgress extends View {
 
     private ArcPoint[] mArcPoint;
     private static final int POINT_NUM = 15;
+    private static final int DELTA_ANGLE = 360 / POINT_NUM;
     private long mDuration = 3600;
 
     public CircleProgress(Context context) {
@@ -75,7 +76,6 @@ public class CircleProgress extends View {
         calPoints(1.0f);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
@@ -100,14 +100,14 @@ public class CircleProgress extends View {
     }
 
     private void calPoints(float factor) {
-        mRadius = (int) (mViewSize / 3 * factor);
-        mPointRadius = mRadius / 12;
+        int radius = (int) (mViewSize / 3 * factor);
+        mPointRadius = radius / 12;
 
         for (int i = 0; i < POINT_NUM; ++i) {
-            float x = mRadius * -(float) Math.sin(DEGREE * 24 * i);
-            float y = mRadius * -(float) Math.cos(DEGREE * 24 * i);
+            float x = radius * -(float) Math.sin(DEGREE * DELTA_ANGLE * i);
+            float y = radius * -(float) Math.cos(DEGREE * DELTA_ANGLE * i);
 
-            ArcPoint point = new ArcPoint(x, y, COLORS[i % 3]);
+            ArcPoint point = new ArcPoint(x, y, COLORS[i % COLOR_NUM]);
             mArcPoint[i] = point;
         }
     }

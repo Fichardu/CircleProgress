@@ -13,7 +13,10 @@ A Circle Progress View with a rotate animation. Just make for fun. Hope you enjo
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content"
+        circleprogress:color1="@android:color/holo_red_light"
+        circleprogress:color2="@android:color/holo_green_light"
+        circleprogress:color3="@android:color/holo_blue_light" />
 ```
 
 ```java
