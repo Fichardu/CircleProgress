@@ -29,4 +29,4 @@ mProgressView.setInterpolator();
 
 # Analyse
 
-[Analyse Blog post here](http://fichardu.github.io/blog/circle-progress-view/)
+[Analyse Blog post here](http://blog.csdn.net/xu_fu/article/details/44725921)
